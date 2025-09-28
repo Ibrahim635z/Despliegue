@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guía de Comandos de Git</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f7f6;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2d3748;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 90%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            border-radius: 10px;
+            overflow: hidden; /* Para que el border-radius afecte a las celdas */
+        }
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        thead th {
+            background-color: #2d3748;
+            color: #ffffff;
+            font-size: 1.1em;
+        }
+        /* Estilo para los títulos de cada sección */
+        .seccion-titulo {
+            background-color: #718096;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        tbody tr:nth-of-type(even) {
+            background-color: #f7fafc;
+        }
+        tbody tr:hover {
+            background-color: #edf2f7;
+        }
+        code {
+            background-color: #e2e8f0;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace;
+            color: #2d3748;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Guía de Comandos de Git</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Comando</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="2" class="seccion-titulo">Básico</td>
+            </tr>
+            <tr>
+                <td><code>git init &lt;carpeta&gt;</code></td>
+                <td>Crea un repositorio vacío en &lt;carpeta&gt;. Sin argumentos, lo crea en el directorio actual.</td>
+            </tr>
+            <tr>
+                <td><code>git clone &lt;repositorio&gt;</code></td>
+                <td>Clona un &lt;repositorio&gt; en tu máquina local. Puede ser local o remoto (HTTP o SSH).</td>
+            </tr>
+            <tr>
+                <td><code>git config user.name &lt;autor&gt;</code></td>
+                <td>Define el &lt;autor&gt; para todas las confirmaciones en el repositorio actual.</td>
+            </tr>
+            <tr>
+                <td><code>git config --global user.name &lt;autor&gt;</code></td>
+                <td>Define el nombre del &lt;autor&gt; para todas las confirmaciones del usuario actual en el sistema.</td>
+            </tr>
+            <tr>
+                <td><code>git config --global user.email &lt;correo&gt;</code></td>
+                <td>Define el &lt;correo&gt; del autor para todas las confirmaciones del usuario actual.</td>
+            </tr>
+            <tr>
+                <td><code>git add &lt;carpeta/archivo&gt;</code></td>
+                <td>Agrega los cambios realizados al área de preparación (staging). Acepta expresiones regulares.</td>
+            </tr>
+            <tr>
+                <td><code>git commit -m "&lt;mensaje&gt;"</code></td>
+                <td>Confirma los cambios en el área de preparación con un &lt;mensaje&gt; descriptivo.</td>
+            </tr>
+            <tr>
+                <td><code>git status</code></td>
+                <td>Muestra la lista de archivos con cambios, los que están en staging y los que no tienen seguimiento.</td>
+            </tr>
+            <tr>
+                <td><code>git log</code></td>
+                <td>Muestra el historial de confirmaciones (formato por defecto).</td>
+            </tr>
+            <tr>
+                <td><code>git diff</code></td>
+                <td>Muestra los cambios no marcados entre el índice y la carpeta de trabajo.</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="seccion-titulo">Deshaciendo Cambios</td>
+            </tr>
+            <tr>
+                <td><code>git revert &lt;confirmacion&gt;</code></td>
+                <td>Crea una nueva confirmación que deshace todos los cambios realizados en la &lt;confirmacion&gt; específica.</td>
+            </tr>
+            <tr>
+                <td><code>git reset &lt;archivo&gt;</code></td>
+                <td>Elimina el &lt;archivo&gt; del área de preparación (staging), pero mantiene los cambios en el directorio de trabajo.</td>
+            </tr>
+            <tr>
+                <td><code>git reset --hard</code></td>
+                <td>Reinicia el área de preparación y el directorio de trabajo para coincidir con la última confirmación, <strong>descartando todos los cambios no confirmados</strong>.</td>
+            </tr>
+            <tr>
+                <td><code>git reset &lt;confirmacion&gt;</code></td>
+                <td>Mueve la rama actual hacia la &lt;confirmacion&gt;, reiniciando el área de preparación pero dejando la carpeta de trabajo.</td>
+            </tr>
+            <tr>
+                <td><code>git reset --hard &lt;confirmacion&gt;</code></td>
+                <td>Igual que <code>git reset --hard</code> pero además mueve la rama a una &lt;confirmacion&gt; anterior.</td>
+            </tr>
+            <tr>
+                <td><code>git clean -n</code></td>
+                <td>Muestra los archivos que van a ser eliminados de la carpeta de trabajo.</td>
+            </tr>
+            <tr>
+                <td><code>git clean -f</code></td>
+                <td>Elimina permanentemente los archivos sin seguimiento del directorio de trabajo.</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="seccion-titulo">Re-escribiendo el Historial</td>
+            </tr>
+            <tr>
+                <td><code>git commit --amend</code></td>
+                <td>Reemplaza la última confirmación con los cambios que estén en el área de preparación. Permite editar el mensaje.</td>
+            </tr>
+            <tr>
+                <td><code>git rebase &lt;base&gt;</code></td>
+                <td>Elimina el &lt;archivo&gt; del área de preparación, dejando el directorio de trabajo sin cambios.</td>
+            </tr>
+            <tr>
+                <td><code>git rebase -i &lt;base&gt;</code></td>
+                <td>Inicia un rebase interactivo que abre un editor para reorganizar, unir o eliminar confirmaciones.</td>
+            </tr>
+            <tr>
+                <td><code>git reflog</code></td>
+                <td>Muestra un log de todos los cambios en el <code>HEAD</code> del repositorio local (incluso los borrados).</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="seccion-titulo">Ramas</td>
+            </tr>
+            <tr>
+                <td><code>git branch &lt;rama&gt;</code></td>
+                <td>Crea una nueva &lt;rama&gt;. Sin argumentos, lista todas las ramas locales.</td>
+            </tr>
+            <tr>
+                <td><code>git checkout -b &lt;rama&gt;</code></td>
+                <td>Crea una nueva &lt;rama&gt; y se posiciona en ella.</td>
+            </tr>
+            <tr>
+                <td><code>git merge &lt;rama&gt;</code></td>
+                <td>Mezcla la &lt;rama&gt; indicada con la rama actual.</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="seccion-titulo">Repositorios Remotos</td>
+            </tr>
+            <tr>
+                <td><code>git remote add &lt;nombre&gt; &lt;enlace&gt;</code></td>
+                <td>Crea una nueva conexión a un repositorio remoto. &lt;nombre&gt; es el alias (ej. <code>origin</code>).</td>
+            </tr>
+            <tr>
+                <td><code>git fetch &lt;remoto&gt;</code></td>
+                <td>Obtiene los cambios del repositorio &lt;remoto&gt; sin fusionarlos con las ramas locales.</td>
+            </tr>
+            <tr>
+                <td><code>git pull &lt;remoto&gt;</code></td>
+                <td>Obtiene una copia del repositorio &lt;remoto&gt; y la fusiona al instante con el repositorio local.</td>
+            </tr>
+            <tr>
+                <td><code>git pull --rebase &lt;remoto&gt;</code></td>
+                <td>Obtiene una copia del repositorio &lt;remoto&gt; y realiza un rebase en vez de un merge.</td>
+            </tr>
+            <tr>
+                <td><code>git push &lt;remoto&gt; &lt;rama&gt;</code></td>
+                <td>Envía la &lt;rama&gt; local al repositorio &lt;remoto&gt;.</td>
+            </tr>
+            <tr>
+                <td><code>git push --force &lt;remoto&gt;</code></td>
+                <td>Fuerza el envío a la rama remota, ignorando cambios incompatibles. ¡Usar con mucho cuidado!</td>
+            </tr>
+            <tr>
+                <td><code>git push --all &lt;remoto&gt;</code></td>
+                <td>Envía todas las ramas del repositorio local al repositorio &lt;remoto&gt;.</td>
+            </tr>
+            <tr>
+                <td><code>git push --tags &lt;remoto&gt;</code></td>
+                <td>Envía todas las etiquetas locales al repositorio &lt;remoto&gt;.</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="seccion-titulo">Opciones para <code>git log</code></td>
+            </tr>
+            <tr>
+                <td><code>git log --limit=&lt;limite&gt;</code></td>
+                <td>Limita el número de logs mostrados. Ejemplo: <code>git log -5</code>.</td>
+            </tr>
+            <tr>
+                <td><code>git log --oneline</code></td>
+                <td>Condensa cada confirmación en una sola línea.</td>
+            </tr>
+            <tr>
+                <td><code>git log -p</code></td>
+                <td>Muestra todos los cambios de cada confirmación.</td>
+            </tr>
+            <tr>
+                <td><code>git log --stat</code></td>
+                <td>Incluye los archivos que se modificaron y el número de líneas que fueron añadidas o borradas.</td>
+            </tr>
+            <tr>
+                <td><code>git log --author="&lt;autor&gt;"</code></td>
+                <td>Busca las confirmaciones de un &lt;autor&gt; en particular.</td>
+            </tr>
+            <tr>
+                <td><code>git log --grep="&lt;patron&gt;"</code></td>
+                <td>Busca confirmaciones cuyo mensaje coincida con el &lt;patron&gt; asignado.</td>
+            </tr>
+            <tr>
+                <td><code>git log &lt;desde&gt;..&lt;hasta&gt;</code></td>
+                <td>Muestra las confirmaciones entre un punto y otro (puede ser un hash, rama, HEAD, etc.).</td>
+            </tr>
+            <tr>
+                <td><code>git log -- &lt;archivo&gt;</code></td>
+                <td>Muestra solo las confirmaciones del &lt;archivo&gt; especificado.</td>
+            </tr>
+            <tr>
+                <td><code>git log --graph --decorate</code></td>
+                <td>Muestra un gráfico en texto al lado izquierdo de los mensajes de confirmación.</td>
+            </tr>
+
+            <tr>
+                <td colspan="2" class="seccion-titulo">Opciones para <code>git config</code></td>
+            </tr>
+            <tr>
+                <td><code>git config --global alias.&lt;alias&gt; &lt;comando&gt;</code></td>
+                <td>Crea un atajo (<code>&lt;alias&gt;</code>) para un <code>&lt;comando&gt;</code> más largo.</td>
+            </tr>
+            <tr>
+                <td><code>git config --system core.editor &lt;editor&gt;</code></td>
+                <td>Define el <code>&lt;editor&gt;</code> usado por los comandos para todos los usuarios.</td>
+            </tr>
+            <tr>
+                <td><code>git config --global -e</code></td>
+                <td>Abre el archivo de configuración global para que pueda ser editado manualmente.</td>
+            </tr>
+            
+            <tr>
+                <td colspan="2" class="seccion-titulo">Opciones para <code>git diff</code></td>
+            </tr>
+            <tr>
+                <td><code>git diff head</code></td>
+                <td>Muestra las diferencias entre la última confirmación y la carpeta de trabajo.</td>
+            </tr>
+            <tr>
+                <td><code>git diff --cached</code></td>
+                <td>Muestra las diferencias entre el área de preparación (staging) y la última confirmación.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

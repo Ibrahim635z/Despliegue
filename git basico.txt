@@ -1,0 +1,44 @@
+git init
+ls -a (ver archivos ocultos)
+ls .git(vemos lo que hay en ese archivo oculto)
+nano saludo.txt
+git config --list
+cd ~(te lleva al home del usuario)
+git add (archivo) --> lo pasamos al stage área
+git rm ..cached <file> quitar lo que hemos pasado al stage área
+git commit -m "test"
+git log (ver los commits que he hecho)
+git restore <nombrearchivo> volver atrás en el tiempo
+git restore --staged <archivo> volver atrás del stage are lo cual lo devuelve a cuando estaba modificado por tanto si lo usas y luego usas el restore normal vuelves al archivo inicial
+git restore --source (hay que mirarlo ibra)
+Git reset --soft HEAD ~n (Deshace hasta el número de commit indicado por n de manera
+suave, es decir, deshace el commit pero pero conserva staging y working dir.)
+Git reset --mixed (por defecto) → mueve HEAD y limpia staging, pero mantiene cambios
+en el working dir.
+Git reset --hard HEAD ~n (borra todo lo hecho en el área de trabajo)
+
+
+git revert <file> Este comando crea una nueva
+confirmación que deshace los cambios de una
+confirmación anterior. Este comando agrega un
+nuevo historial al proyecto (no modifica el historial
+existente).
+• En definitiva. toma un commit, y lo sube a donde
+digas, cabiando el puntero de HEAD
+• No confundas con reset
+
+Tag ligero:
+• git tag v1.0 <commit_id>
+Tag anotado:
+• git tag -a v1.4 -m 'my version 1.4',
+• Mostrar tag:
+• git show v1.4, muestra una etiqueta
+
+Git no deduce automáticamente tu comando si lo tecleas parcialmente. Si no quieres teclear el nombre completo de cada
+comando de Git, puedes establecer fácilmente un alias para cada comando mediante git config. Aquí tienes algunos ejemplos
+que te pueden interesar:
+git config --global alias.co checkout
+git config --global alias.br Branch
+
+Y para borrarlo:
+git config --global --unset alias.st
