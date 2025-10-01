@@ -1,0 +1,1 @@
+git log > commits.txt --> así guardo el hash de mis commits
