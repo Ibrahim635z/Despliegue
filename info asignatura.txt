@@ -2,4 +2,6 @@ git log > commits.txt --> así guardo el hash de mis commits
 
 git switch para cambiar de rama
 git Branch -d rama --> elimina la rama si esta fusionada
-git Branch -D rama --> le da igual que este funcionada o no
+git Branch -D rama --> le da igual que este funsonada o no
+
+
