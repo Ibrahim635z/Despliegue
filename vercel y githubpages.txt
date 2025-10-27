@@ -1,0 +1,14 @@
+documentar:
+npm init -y (genera el package.json)
+npm install jest jsdoc --save-dev (instala dependencias jest para pruebas jsdoc para documentar)
+añades a la sección scripts:
+"test": "jest",
+    "docs": "jsdoc -c jsdoc.conf.json"
+
+y mas abajo añade:
+"devDependencies": {
+    "jest": "^29.7.0",
+    "jsdoc": "^4.0.3"
+  }
+
+token de vercel 30dias: kRBHmMQoixQhhB3Z8g02QfFH
