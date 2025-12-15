@@ -12,3 +12,4 @@ y mas abajo añade:
   }
 
 token de vercel 30dias: kRBHmMQoixQhhB3Z8g02QfFH
+TOKEN 2.0: zDrmpKN2QScPvzqo7hmD0qmt

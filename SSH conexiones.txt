@@ -1,0 +1,30 @@
+SSH conexiones:
+
+descargar labsuser.pem
+
+
+ssh -i labsuser.pem ubuntu@54.159.91.199 (la ip publica de nuestra instancia)
+
+sudo apt update
+sudo apt install docker.io
+
+sudo systemctl enable Docker (habilitar el servicio de Docker para que inicie solo)
+sudo systemctl start docker
+sudo systemctl status Docker
+
+ sudo usermod -aG docker Ubuntu (para dar permisos solo a Docker y a ubuntu )
+
+newgrp Docker (lee las acciones que hay en Docker sobre el sin necesidad de reiniciar)
+
+
+git clone (mi proyecto)
+si es privado deberas entrar con un token
+
+Docker build -t 
+
+docker run -d --name kk -p 80:80 (nomrbe de la imagen)
+
+
+necesito la ip de la instancia(elastica)
+el usuario (ubuntu)
+clave privada (.pem)

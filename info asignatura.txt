@@ -2,6 +2,38 @@ git log > commits.txt --> así guardo el hash de mis commits
 
 git switch para cambiar de rama
 git Branch -d rama --> elimina la rama si esta fusionada
-git Branch -D rama --> le da igual que este funsonada o no
+git Branch -D rama --> le da igual que este funcionada o no
+
+
+en vs code si no deja subir al gitHub:
+
+git push --set-upstream origin main(preguntale a esto)
+
+a que GitHub apunta:
+Git remote -v
+---------------------
+ff7d101 head --> main inicio del proyecto
+b5538e3 head --> develop Creación de js y php
+a6f37aa head -->feature/calculadora(borrada)
+
+-------------------
+aad59d0 (HEAD -> develop) Introducida la documentacion en formato markdown
+db31773 aplicaciones terminadas y comentadas
+e6d48ec Feature: Palindromo py terminado y comentado
+db687c8 Funcionalidad conversor js terminado y comentado
+a6fe7aa Funcionalidad calculadora php terminada
+b5538e3 Creacion de js y php
+ff7d101 (main) Inicio del proyecto
+----------
+
+PULL REQUEST
+------------
+añadir upstream: git remote add upstream http...
+descargarme lo que hay en upstream: git fetch upstream
+luego me cambio a main y hago un merge: git merge upstream/main
+subir a mi repositorio de GitHub: git push origin main
+
+
+
 
 
