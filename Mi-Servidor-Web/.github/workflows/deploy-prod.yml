@@ -1,36 +1,32 @@
-name: Despliegue en produccion
+name: Despliegue Producción (Windows)
 
 on:
   push:
-    branches: [ "main" ] # solo lo activo en la rama principal ya que será de produccion
+    branches: [ "main" ]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  deploy-prod:
+    runs-on: self-hosted # Esto buscará tu runner de Windows
     steps:
-    - name: Deploy via SSH
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SERVER_HOST }}
-        username: ${{ secrets.SERVER_USER }}
-        key: ${{ secrets.SSH_PRIVATE_KEY }}
-        script: |
-          # 1. Crear carpeta si no existe y entrar
-          mkdir -p ~/app-prod
-          cd ~/app-prod
-          
-          # 2. Clonar/Actualizar el repositorio (Método simplificado)
-          # Nota: En un entorno real usaríamos git pull o clonaríamos
-          # Para simplificar, asumimos que usas git clone la primera vez:
-          # git clone https://github.com/TU_USUARIO/TU_REPO.git .
-          git pull origin main
-          
-          # 3. Construir la imagen (NUEVA VERSIÓN)
-          docker build -t mi-web-prod:latest .
-          
-          # 4. Parar y borrar contenedor viejo (si existe)
-          docker stop web-prod || true
-          docker rm web-prod || true
-          
-          # 5. Arrancar nuevo contenedor (Aislado)
-          docker run -d --name web-prod -p 8080:80 mi-web-prod:latest
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Construir y Desplegar
+      shell: powershell # Forzamos que use PowerShell explícitamente
+      run: |
+        echo "Construyendo imagen en Windows..."
+        
+        # 1. Construir imagen
+        docker build -t mi-web-prod:latest .
+        
+        # 2. Limpiar contenedor viejo (La sintaxis cambia un poco para evitar errores si no existe)
+        # En PowerShell, si un comando falla, el script puede parar.
+        # Usamos "ErrorAction SilentlyContinue" o comprobamos si existe.
+        
+        if (docker ps -a -q -f name=web-prod) {
+            docker stop web-prod
+            docker rm web-prod
+        }
+        
+        # 3. Arrancar contenedor (Puerto 8080)
+        docker run -d --name web-prod -p 8080:80 mi-web-prod:latest
