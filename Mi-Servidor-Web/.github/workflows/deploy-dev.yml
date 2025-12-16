@@ -8,42 +8,41 @@ jobs:
   deploy-dev:
     runs-on: self-hosted
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Bajar código
+        uses: actions/checkout@v3
 
-    - name: Desplegar Dev con Volúmenes
-      shell: powershell
-      run: |
-        echo "Desplegando entorno de desarrollo..."
-        
-        # 1. Copiar archivos a una ruta fija y estable (ej: C:\temp\dev)
-        # Esto evita problemas de bloqueos de archivos en la carpeta del runner
-        $DevPath = "C:\docker-dev-temp"
-        
-        # Crear directorios si no existen
-        if (!(Test-Path -Path "$DevPath\nginx")) { New-Item -ItemType Directory -Force -Path "$DevPath\nginx" }
-        if (!(Test-Path -Path "$DevPath\html")) { New-Item -ItemType Directory -Force -Path "$DevPath\html" }
-        
-        # Copiar archivos (Force para sobreescribir)
-        Copy-Item -Path ".\nginx\default.conf" -Destination "$DevPath\nginx\" -Force
-        Copy-Item -Path ".\html\*" -Destination "$DevPath\html\" -Recurse -Force
-        
-        # 2. Lógica del contenedor
-        if (!(docker ps -q -f name=web-dev)) {
-            # SI NO EXISTE: Lo creamos
-            # Fíjate en la sintaxis -v: RutaWindows:RutaContenedor
-            
-            # Limpieza previa por si acaso
-            if (docker ps -a -q -f name=web-dev) { docker rm web-dev }
-            
-            docker run -d `
-              --name web-dev `
-              -p 8081:80 `
-              -v ${DevPath}\html:/usr/share/nginx/html `
-              -v ${DevPath}\nginx\default.conf:/etc/nginx/conf.d/default.conf `
-              nginx:alpine
-        } else {
-            # SI YA EXISTE: Recargamos Nginx
-            echo "Recargando configuración..."
-            docker exec web-dev nginx -s reload
-        }
+      - name: Desplegar Dev con Volumenes
+        shell: powershell
+        run: |
+          Write-Host "--- INICIANDO DESPLIEGUE DEV ---"
+          
+          # 1. Definir una carpeta temporal en C: para los archivos
+          # Esto evita errores de permisos con la carpeta del Runner
+          $DevPath = "C:\proyecto-dev-files"
+          
+          # Crear carpetas y copiar archivos frescos
+          New-Item -ItemType Directory -Force -Path "$DevPath\html" | Out-Null
+          New-Item -ItemType Directory -Force -Path "$DevPath\nginx" | Out-Null
+          
+          Copy-Item -Path ".\html\*" -Destination "$DevPath\html" -Recurse -Force
+          Copy-Item -Path ".\nginx\default.conf" -Destination "$DevPath\nginx\" -Force
+
+          # 2. Verificar si el contenedor ya existe
+          $container = docker ps -q -f name=web-dev
+          
+          if (-not $container) {
+              # SI NO EXISTE: Lo creamos conectando las carpetas (Volúmenes)
+              # Si existía uno apagado/roto, lo borramos primero
+              if (docker ps -a -q -f name=web-dev) { docker rm web-dev }
+
+              docker run -d `
+                --name web-dev `
+                -p 8081:80 `
+                -v ${DevPath}\html:/usr/share/nginx/html `
+                -v ${DevPath}\nginx\default.conf:/etc/nginx/conf.d/default.conf `
+                nginx:alpine
+          } else {
+              # SI YA EXISTE: Solo recargamos la configuración
+              Write-Host "El contenedor ya existe. Recargando Nginx..."
+              docker exec web-dev nginx -s reload
+          }

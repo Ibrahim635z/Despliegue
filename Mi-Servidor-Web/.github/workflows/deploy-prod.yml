@@ -5,28 +5,27 @@ on:
     branches: [ "main" ]
 
 jobs:
-  deploy-prod:
-    runs-on: self-hosted # Esto buscará tu runner de Windows
+  build-and-deploy:
+    runs-on: self-hosted  # <--- Esto usa TU Windows
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Bajar código
+        uses: actions/checkout@v3
 
-    - name: Construir y Desplegar
-      shell: powershell # Forzamos que use PowerShell explícitamente
-      run: |
-        echo "Construyendo imagen en Windows..."
-        
-        # 1. Construir imagen
-        docker build -t mi-web-prod:latest .
-        
-        # 2. Limpiar contenedor viejo (La sintaxis cambia un poco para evitar errores si no existe)
-        # En PowerShell, si un comando falla, el script puede parar.
-        # Usamos "ErrorAction SilentlyContinue" o comprobamos si existe.
-        
-        if (docker ps -a -q -f name=web-prod) {
-            docker stop web-prod
-            docker rm web-prod
-        }
-        
-        # 3. Arrancar contenedor (Puerto 8080)
-        docker run -d --name web-prod -p 8080:80 mi-web-prod:latest
+      - name: Desplegar en Docker
+        shell: powershell
+        run: |
+          Write-Host "--- INICIANDO DESPLIEGUE PROD ---"
+          
+          # 1. Construir la imagen (Meter archivos dentro de la caja)
+          docker build -t mi-web-prod:latest .
+
+          # 2. Limpiar contenedor viejo si existe
+          # Usamos try/catch simplificado o comprobación básica
+          $container = docker ps -a -q -f name=web-prod
+          if ($container) {
+              docker stop web-prod
+              docker rm web-prod
+          }
+
+          # 3. Arrancar nuevo contenedor en puerto 8080
+          docker run -d --name web-prod -p 8080:80 mi-web-prod:latest
