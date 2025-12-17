@@ -18,7 +18,7 @@ jobs:
           
           # 1. Definir una carpeta temporal en C: para los archivos
           # Esto evita errores de permisos con la carpeta del Runner
-          $DevPath = "C:\proyecto-dev-files"
+          $DevPath = "C:\Users\chakr\Desktop\Section runners"
           
           # Crear carpetas y copiar archivos frescos
           New-Item -ItemType Directory -Force -Path "$DevPath\html" | Out-Null
